@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+    {% if perms.movie %}
+        <p>Welcome, {{ user.username }}. Thanks for logging in.</p>
+    <div class="btn-group"></div>
+        <center><h1>List Of Movies</h1></center>
+        {% if perms.movie.add_movie %}
+        <center>
+            <a class="btn btn-outline-secondary btn-sm mt-2" href="{% url 'create' %}">Create</a>
+            <a class="btn btn-outline-secondary btn-sm mt-2" href="{% url 'logout' %}">Log Out</a>
+        </center>
+        {% endif %}
+        <hr>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for movie in movies %}
+            <div class="col" style="display: inline-block;">
+                <div class="card shadow-sm">
+                <img class="card-img-top" src="{{movie.image.url}}">
+                <div class="card-body">
+                    <p class="card-text">{{movie.overView}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a class="btn btn-outline-secondary btn-sm mt-2" href="{% url 'show'   id=movie.id %}">watch</a>
+                        {% if perms.movie.delete_movie %}
+                            <a class="btn btn-outline-secondary btn-sm mt-2" href="{% url 'delete' id=movie.id %}">Delete</a>
+                        {% endif %}
+                        {% if perms.movie.change_movie %}
+                            <a class="btn btn-outline-secondary btn-sm mt-2" href="{% url 'update' id=movie.id %}">Update</a>
+                        {% endif %}
+                        <a class="btn btn-outline-secondary btn-sm mt-2">more</a>
+                    </div>
+                    <small class="text-muted">{{movie.year}}</small>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <hr>
+    {% else %}
+        <p>Welcome, new user. Please log in.</p>
+    {% endif %}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous">
+    </script>
+</body>
+</html>
